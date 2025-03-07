@@ -4,7 +4,6 @@ import pandas as pd
 import time
 import random
 import matplotlib.pyplot as plt
-from streamlit_gsheets import GSheetsConnection
 
 gsheet_url = st.secrets["connections"]["gsheet_url"]
 
