@@ -6,16 +6,16 @@ import random
 import matplotlib.pyplot as plt
 from streamlit_gsheets import GSheetsConnection
 
-sheet_url = "https://docs.google.com/spreadsheets/d/1AE6pb5v8EWSYnEoNtu_UJSj4SJVHXZLm4-t4MLzIxHY/gviz/tq?tqx=out:csv&gid=0"
+gsheet_url = st.secrets["connections"]["gsheet_url"]
 
 # Function to fetch data from Google Sheets
 @st.cache_data(ttl=60)
-def fetch_data():
-    df = pd.read_csv(sheet_url)
+def load_data():
+    df = pd.read_csv(gsheet_url)
     return df
 
 # Load dataset from Google Sheets
-df = fetch_data()
+df = load_data()
 
 st.title('Streamlit App: Car Crashes Analysis')
 st.subheader('Data Visualization')
