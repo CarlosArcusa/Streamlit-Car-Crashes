@@ -1,5 +1,6 @@
-seaborn
 streamlit
 pandas
+seaborn
 matplotlib
-st-gsheets-connection
+streamlit_gsheets
+gspread
