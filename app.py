@@ -17,6 +17,7 @@ df = fetch_data()
 st.title('Streamlit App: Analysis of US Car Crashes')
 st.subheader('Data Visualization')
 
+# Question that will be visible to the user
 st.write("Which U.S. states have the least safest drivers based on alcohol crashes?")
 
 if 'chart_selected' not in st.session_state:
