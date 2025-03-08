@@ -5,22 +5,20 @@ import time
 import random
 import matplotlib.pyplot as plt
 
-sheet_url = "https://docs.google.com/spreadsheets/d/1AE6pb5v8EWSYnEoNtu_UJSj4SJVHXZLm4-t4MLzIxHY/gviz/tq?tqx=out:csv&gid=0"
+google_sheet_url = "https://docs.google.com/spreadsheets/d/1AE6pb5v8EWSYnEoNtu_UJSj4SJVHXZLm4-t4MLzIxHY/gviz/tq?tqx=out:csv&gid=0"
 
-# Function to fetch data from Google Sheets
-@st.cache_data(ttl=60)
+@st.cache_data()
 def fetch_data():   
-    df = pd.read_csv(sheet_url)
+    df = pd.read_csv(google_sheet_url)
     return df
 
-# Load dataset from Google Sheets
 df = fetch_data()
 
-st.title('Streamlit App: Car Crashes Analysis')
+st.title('Streamlit App: Analysis of US Car Crashes')
 st.subheader('Data Visualization')
 
-#Question visible to the user
-st.write("Which U.S. states have the least safest drivers based on alcohol-related crashes?")
+# Question that is visible to the user to answer and assess how long it takes him to answer.
+st.write("Which U.S. states have the least safest drivers based on alcohol crashes?")
 
 if 'chart_selected' not in st.session_state:
     st.session_state.chart_selected = False
@@ -32,30 +30,30 @@ if 'end_time' not in st.session_state:
     st.session_state.end_time = None
 
 def chart_a():
-    df["alcohol_pct"] = (df["alcohol"] / df["total"]) * 100  # Calculate percentage
+    df["alcohol_pct"] = (df["alcohol"] / df["total"]) * 100  
 
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.scatterplot(data=df, x="alcohol_pct", y="total", hue="alcohol_pct", size="alcohol_pct", sizes=(20, 200), palette="coolwarm", ax=ax)
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=df, x="alcohol_pct", y="total", hue="alcohol_pct", size="alcohol_pct", palette="Blues_r", ax=ax)
 
     for i in range(len(df)):
-        ax.text(df["alcohol_pct"][i], df["total"][i], df["abbrev"][i], fontsize=9, ha='right')
+        ax.text(df["alcohol_pct"][i], df["total"][i], df["abbrev"][i])
 
-    ax.set_xlabel("Alcohol-Related Accidents (%)")
+    ax.set_xlabel("Alcohol Accidents in Percentage")
     ax.set_ylabel("Total Car Crashes")
-    ax.set_title("Chart A: % of Alcohol-Related Accidents vs. Total Crashes")
+    ax.set_title("Chart A: Percentage of Alcohol Accidents vs. Total Crashes")
     st.pyplot(fig)
 
 def chart_b():
-    df["alcohol_pct"] = (df["alcohol"] / df["total"]) * 100  # Ensure percentage calculation
+    df["alcohol_pct"] = (df["alcohol"] / df["total"]) * 100  
 
-    df_sorted = df.sort_values(by="alcohol_pct", ascending=False).head(10)  # Sort by alcohol percentage
+    df_sorted = df.sort_values(by="alcohol_pct", ascending=False).head(10)  
 
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(data=df_sorted, x="alcohol_pct", y="abbrev", palette="coolwarm", ax=ax)
+    fig, ax = plt.subplots()
+    sns.barplot(data = df_sorted, x="alcohol_pct", y="abbrev", palette="Blues_r", ax=ax)
 
-    ax.set_xlabel("Alcohol-Related Accidents (%)")  # Update label to match the correct metric
-    ax.set_ylabel("State")
-    ax.set_title("Chart B: Top States with Most Alcohol-Related Accidents (%)")
+    ax.set_xlabel("Alcohol Accidents in Pecentage")  
+    ax.set_ylabel("US States")
+    ax.set_title("Chart B: Top States with Most Alcohol Accidents in Pecentage")
     st.pyplot(fig)
 
 if st.button("Show Chart"):
