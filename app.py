@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 google_sheet_url = "https://docs.google.com/spreadsheets/d/1AE6pb5v8EWSYnEoNtu_UJSj4SJVHXZLm4-t4MLzIxHY/gviz/tq?tqx=out:csv&gid=0"
 
-@st.cache_data()
+@st.cache_data(ttl=60)
 def fetch_data():   
     df = pd.read_csv(google_sheet_url)
     return df
